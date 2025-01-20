@@ -1,0 +1,22 @@
+.program pio_wave 
+
+;Generate a square wave on a GPIO pin
+    set pindirs, 1 ;Set pin direction to output
+.wrap_target ;Free 0 cycle unconditional jump
+    set pins, 1 ;Drive pins high
+    set pins, 0 ;Drive pins low
+.wrap
+
+;Helper function
+
+%c-sdk{
+    static inline void PIOMaxSqaureWave_program_init(PIO pio, uint sm, uint offset, uint pin, float clk_div){ 
+        pio_sm_config c = pio_wave_program_get_default_config(offset); //Get default configurations for the PIO state machine
+        sm_config_set_set_pins(&c, pin, 1); //Set the state machine configurations on the given pin
+        sm_config_set_clkdiv(&c, clk_div); //Set the state machine clock divider
+        pio_gpio_init(pio, pin); //Setup the function select for a GPIO to use output from the given PIO instance
+        pio_sm_set_consecutive_pindirs(pio, sm, pin, 1, true); //Use a state machine to set the same pin direction for multiple consecutive pins for the PIO instance
+        pio_sm_init(pio, sm, offset, &c); //Resets the state machine to a consistent state, and configures it
+        pio_sm_set_enabled(pio, sm, true); //Enable or disable a PIO state machine
+    }
+%}
