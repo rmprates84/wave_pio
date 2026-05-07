@@ -1,4 +1,4 @@
-📄 README.md – Geração de Onda com PIO no RP2040 (Pico W)
+📄 **Geração de Onda com PIO no RP2040 (Pico W)**
 📌 Descrição
 
 Este projeto demonstra o uso do periférico PIO (Programmable I/O) do microcontrolador RP2040 para geração de uma onda digital (square wave) em um pino GPIO.
